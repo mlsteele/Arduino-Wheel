@@ -1,12 +1,8 @@
 // Wheel
 
-// Wraps Servo in a construct that makes continuous rotation easier
-// Write values range from -1 to 1. Values beyond this range -will- work
-// but it is preferrable to modify calibration.
-
-// Lesson Learned: PinMode in constructor's called before init don't work
-// FIXME: Servo.h is uncooperative when being imported
-// TODO: Remove personal calibration out of wheel abstraction because that's not cool.
+// Abstract class for interfacing with a wheel
+// Write values range from -1.0 to 1.
+// Treatment of out of bounds values is dependent upon the implementation
 
 #ifndef _WHEEL_H_
 #define _WHEEL_H_
@@ -16,23 +12,16 @@
 #else
   #include "WProgram.h"
 #endif
-#include <Servo.h> // FIXME: Why is this broken?
 
 class Wheel {
   public:
-    Wheel(int pin, int directionMultiplier);
-    void write(double speed);
-    double read() const;
+    Wheel() : _speed(0) {};
+    virtual void write(double speed) =0;
+    double read() const {return _speed;};
     void stop() {return write(0);};
   
-  private:
-    const int _pin;
-    const int _directionMultiplier;
+  protected:
     double _speed;
-    Servo _servo;
-    boolean _started;
-    
-    void start();
 };
 
 #endif
