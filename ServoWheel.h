@@ -8,7 +8,6 @@
 
 // Lesson Learned: PinMode in constructor's called before init don't work
 // FIXME: Servo.h is uncooperative when being imported
-// TODO: Remove personal calibration because that's not cool.
 
 #ifndef _SERVOWHEEL_H_
 #define _SERVOWHEEL_H_
@@ -24,12 +23,14 @@
 
 class ServoWheel : public Wheel {
   public:
-    ServoWheel(int pin, int directionMultiplier);
+    ServoWheel(int pin, int directionMultiplier, int stopUs, int varianceUs);
     void write(double speed);
   
   private:
     const int _pin;
     const int _directionMultiplier;
+    const int _stopUs;
+    const int _varianceUs;
     Servo _servo;
     boolean _started;
     
